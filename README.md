@@ -26,7 +26,7 @@ OSRM Mali Backend is a FastAPI-based web service that provides routing informati
    cd osrm-mali-backend
    ```
 
-2. Create a `.env` file in the root directory with the following content:
+2. Create a `.env` file in the root directory with the following content (not required, the `.env` file already exist in this repo) :
    ```
    OSRM_URL=http://localhost:5001
    LOG_LEVEL=INFO
