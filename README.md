@@ -40,6 +40,12 @@ OSRM Mali Backend is a FastAPI-based web service that provides routing informati
    ```
    This script will build the Docker image and start the container, exposing the FastAPI application on port 8000 and the OSRM backend on port 5001.
 
+   PS: If the command ./run.sh doesn't work, try the following command:
+   ```
+   chmod +x run.sh
+   ```
+   Then, run ./run.sh again.
+
 ## Usage
 
 To use the API, send a GET request to the `/route` endpoint with the following query parameters:
