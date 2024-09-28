@@ -1,5 +1,6 @@
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Depends
 from app.services.osrm_service import get_route
+from app.dependencies import verify_api_key
 from typing import Tuple
 
 router = APIRouter()
@@ -7,7 +8,8 @@ router = APIRouter()
 @router.get("/route")
 async def route(
     origin: str = Query(..., regex="^-?\d+(\.\d+)?,-?\d+(\.\d+)?$"),
-    destination: str = Query(..., regex="^-?\d+(\.\d+)?,-?\d+(\.\d+)?$")
+    destination: str = Query(..., regex="^-?\d+(\.\d+)?,-?\d+(\.\d+)?$"),
+    api_key: str = Depends(verify_api_key)
 ):
     origin_lat, origin_lon = map(float, origin.split(','))
     dest_lat, dest_lon = map(float, destination.split(','))

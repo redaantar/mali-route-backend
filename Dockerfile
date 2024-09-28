@@ -32,10 +32,11 @@ COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY . /app
+COPY .env /app/.env
+
+COPY . /app
 
 EXPOSE 8000
-
-EXPOSE 5001
 
 ENV OSRM_URL=http://localhost:5001
 
