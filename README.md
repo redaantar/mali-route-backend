@@ -2,137 +2,105 @@
 
 ## Overview
 
-OSRM Mali Backend is a FastAPI-based service that provides routing capabilities for Mali using OpenStreetMap data and the OSRM (Open Source Routing Machine) engine. This service offers an HTTP API endpoint for calculating routes between two points in Mali.
+OSRM Mali Backend is a FastAPI-based web service that provides routing information for Mali using OpenStreetMap data and the OSRM (Open Source Routing Machine) engine. This service offers an API endpoint for calculating routes between two points in Mali, returning distance and duration information.
 
 ## Features
 
-- Route calculation between two geographic coordinates
+- Route calculation between two geographical points in Mali
 - Distance and duration estimation for routes
 - API key authentication for secure access
 - Dockerized application for easy deployment
-- Built on FastAPI for high performance and easy API documentation
+- Integration with OSRM for efficient routing calculations
 
 ## Prerequisites
 
 - Docker
 - Docker Compose (optional, for easier management)
+- Mali OSM data (automatically downloaded in the Dockerfile)
 
-## Installation and Setup
+## Setup
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/mali-route-backend.git
-   cd mali-route-backend
+   git clone https://github.com/your-username/osrm-mali-backend.git
+   cd osrm-mali-backend
    ```
 
-2. Create a `.env` file in the root directory and set your API key:
+2. Create a `.env` file in the root directory with the following content:
    ```
+   OSRM_URL=http://localhost:5001
+   LOG_LEVEL=INFO
    API_KEY=your_secret_api_key_here
    ```
+   Replace `your_secret_api_key_here` with a strong, unique API key.
 
 3. Build and run the Docker container:
    ```
-   docker build -t mali-route-backend .
-   docker run -p 8000:8000 -p 5001:5001 mali-route-backend
+   ./run.sh
    ```
+   This script will build the Docker image and start the container, exposing the FastAPI application on port 8000 and the OSRM backend on port 5001.
 
-   Alternatively, if you're using Docker Compose:
-   ```
-   docker-compose up --build
-   ```
+## Usage
 
-4. The service will be available at `http://localhost:8000`.
+To use the API, send a GET request to the `/route` endpoint with the following query parameters:
 
-## API Documentation
+- `origin`: The starting point of the route (format: `latitude,longitude`)
+- `destination`: The ending point of the route (format: `latitude,longitude`)
 
-### Authentication
+Include the API key in the `X-API-Key` header.
 
-All API requests require an API key to be sent in the `X-API-Key` header.
-
-### Endpoints
-
-#### GET /route
-
-Calculate a route between two points.
-
-**Parameters:**
-
-- `origin` (required): Comma-separated latitude and longitude of the starting point.
-- `destination` (required): Comma-separated latitude and longitude of the end point.
-
-**Headers:**
-
-- `X-API-Key` (required): Your API key for authentication.
-
-**Example Request:**
+Example using curl:
 
 ```
-curl -H "X-API-Key: your_api_key_here" "http://localhost:8000/route?origin=12.65,-8.0&destination=13.5,-7.5"
+curl -H "X-API-Key: your_secret_api_key_here" "http://localhost:8000/route?origin=12.65,-8.0&destination=13.5,-7.5"
 ```
 
-**Example Response:**
+The API will respond with a JSON object containing the route distance and duration:
 
 ```json
 {
   "code": "Ok",
-  "distance": "120.5 km",
+  "distance": "150.25 km",
   "duration": "2h 15m"
 }
 ```
 
-**Error Responses:**
+## API Endpoints
 
-- 400 Bad Request: Invalid input parameters
-- 403 Forbidden: Invalid API key
-- 503 Service Unavailable: OSRM service is unavailable or unable to calculate route
+- `GET /`: Welcome message
+- `GET /health`: Health check endpoint
+- `GET /route`: Route calculation endpoint (requires authentication)
 
-#### GET /health
-
-Check the health status of the service.
-
-**Example Request:**
+## Project Structure
 
 ```
-curl "http://localhost:8000/health"
-```
-
-**Example Response:**
-
-```json
-{
-  "status": "healthy"
-}
-```
-
-## Development
-
-### Project Structure
-
-```
-mali-route-backend/
-│
+osrm-mali-backend/
 ├── app/
 │   ├── __init__.py
-│   ├── main.py
 │   ├── config.py
 │   ├── dependencies.py
+│   ├── main.py
 │   ├── routes/
 │   │   ├── __init__.py
 │   │   └── routing.py
 │   └── services/
 │       ├── __init__.py
 │       └── osrm_service.py
-│
 ├── Dockerfile
 ├── requirements.txt
 ├── run.sh
+├── .env
 └── README.md
 ```
 
-### Configuration
+## Configuration
 
-Configuration is managed through environment variables and the `config.py` file. The following settings are available:
+The application can be configured using environment variables or the `.env` file. The following settings are available:
 
-- `OSRM_URL`: URL of the OSRM routing engine (default: "http://localhost:5001")
-- `LOG_LEVEL`: Logging level (default: "INFO")
-- `API_KEY`: Secret key for API authentication
+- `OSRM_URL`: URL of the OSRM backend service (default: `http://localhost:5001`)
+- `LOG_LEVEL`: Logging level (default: `INFO`)
+- `API_KEY`: Secret API key for authentication
+
+## Deployment
+
+The application is containerized using Docker, making it easy to deploy to various environments. Adjust the `Dockerfile` and `run.sh` script as needed for your specific deployment requirements.
