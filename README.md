@@ -14,6 +14,7 @@ OSRM Mali Backend is a FastAPI-based web service that provides routing informati
 
 ## Prerequisites
 
+- Python
 - Docker
 - Docker Compose (optional, for easier management)
 - Mali OSM data (automatically downloaded in the Dockerfile)
