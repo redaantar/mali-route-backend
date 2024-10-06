@@ -61,7 +61,7 @@ Log out and log back in for the group changes to take effect.
 
 ### 2. Download the project files
 
-Instead of cloning the repository, use wget to download the project files:
+use wget to download the project files:
 
 ```bash
 wget https://github.com/redaantar/mali-route-backend/archive/refs/heads/main.zip
