@@ -64,12 +64,10 @@ Log out and log back in for the group changes to take effect.
 Instead of cloning the repository, use wget to download the project files:
 
 ```bash
-wget https://github.com/your-username/osrm-mali-backend/archive/main.zip
+wget https://github.com/redaantar/mali-route-backend/archive/refs/heads/main.zip
 unzip main.zip
 cd osrm-mali-backend-main
 ```
-
-Replace `https://github.com/your-username/osrm-mali-backend/archive/main.zip` with the actual URL of your project's zip file.
 
 ### 3. Configure the environment
 
